@@ -10,7 +10,7 @@ One module call per OIDC provider. All roles defined as a map.
 
 ```hcl
 module "tfc_oidc" {
-  source          = "github.com/apitanga/terraform-aws-oidc?ref=v2.0.0"
+  source          = "github.com/pomo-studio/terraform-aws-oidc?ref=v2.0.0"
   provider_url    = "https://app.terraform.io"
   client_id_list  = ["aws.workload.identity"]
   thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"]
@@ -42,7 +42,7 @@ module "tfc_oidc" {
 
 ```hcl
 module "github_oidc" {
-  source          = "github.com/apitanga/terraform-aws-oidc?ref=v2.0.0"
+  source          = "github.com/pomo-studio/terraform-aws-oidc?ref=v2.0.0"
   provider_url    = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a3a8518e8759bf075b76b750d4f2df264fcd"]
