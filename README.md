@@ -137,6 +137,11 @@ moved {
 
 Remove `moved` blocks after the first successful apply.
 
+## Examples
+
+- [`examples/basic`](examples/basic/) — GitHub Actions OIDC for a single repo
+- [`examples/complete`](examples/complete/) — Terraform Cloud + GitHub Actions, multiple roles
+
 ## Requirements
 
 | Tool | Version |
