@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Usage
+
+            ```hcl
+            module "oidc" {
+              source  = "pomo-studio/oidc/aws"
+              version = "~> 2.0"
+
+              provider_url    = "https://token.actions.githubusercontent.com"
+              client_id_list  = ["sts.amazonaws.com"]
+              thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+
+              roles = {
+                my-app = {
+                  role_name = "github-actions-my-app"
+                  oidc_conditions = [
+                    { test = "StringEquals", variable = "token.actions.githubusercontent.com:aud", values = ["sts.amazonaws.com"] },
+                    { test = "StringLike", variable = "token.actions.githubusercontent.com:sub", values = ["repo:my-org/my-app:*"] }
+                  ]
+                  policy_json = data.aws_iam_policy_document.deploy.json
+                }
+              }
+            }
+            ```
+
+            ## Full Documentation
+
+            See [README.md](https://github.com/pomo-studio/terraform-aws-oidc/blob/${{ steps.get_version.outputs.VERSION }}/README.md) for complete documentation.
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'beta') || contains(steps.get_version.outputs.VERSION, 'rc') }}

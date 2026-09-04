@@ -1,5 +1,8 @@
 # terraform-aws-oidc
 
+[![Terraform Validation](https://github.com/pomo-studio/terraform-aws-oidc/actions/workflows/terraform.yml/badge.svg)](https://github.com/pomo-studio/terraform-aws-oidc/actions/workflows/terraform.yml)
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-844FBA?logo=terraform)](https://registry.terraform.io/modules/pomo-studio/oidc/aws)
+
 Terraform module for the full OIDC lifecycle on AWS — creates an identity provider and any number of IAM roles with scoped trust policies and permissions.
 
 - One module call provisions both the identity provider and all its IAM roles — no orphaned providers
