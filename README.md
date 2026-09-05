@@ -75,31 +75,51 @@ module "github_oidc" {
 }
 ```
 
-## Variables
+<!-- BEGIN_TF_DOCS -->
+## Requirements
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `provider_url` | `string` | yes | OIDC provider URL |
-| `client_id_list` | `list(string)` | yes | Audience values for the provider |
-| `thumbprint_list` | `list(string)` | yes | Server certificate thumbprints |
-| `roles` | `map(object)` | no | IAM roles to create (see below) |
-| `tags` | `map(string)` | no | Tags for all resources |
+| Name | Version |
+| ---- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0, < 7.0 |
 
-### `roles` object
+## Providers
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `role_name` | `string` | IAM role name |
-| `oidc_conditions` | `list(object)` | Trust policy conditions (`test`, `variable`, `values`) |
-| `policy_json` | `string` | IAM permissions policy as JSON |
+| Name | Version |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.63.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+| ---- | ---- |
+| [aws_iam_openid_connect_provider.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
+| [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+| ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_client_id_list"></a> [client\_id\_list](#input\_client\_id\_list) | List of client IDs (audiences) for the OIDC provider | `list(string)` | n/a | yes |
+| <a name="input_provider_url"></a> [provider\_url](#input\_provider\_url) | OIDC provider URL (e.g. https://app.terraform.io) | `string` | n/a | yes |
+| <a name="input_roles"></a> [roles](#input\_roles) | Map of IAM roles to create with OIDC trust policies | <pre>map(object({<br/>    role_name = string<br/>    oidc_conditions = list(object({<br/>      test     = string<br/>      variable = string<br/>      values   = list(string)<br/>    }))<br/>    policy_json = string<br/>  }))</pre> | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | `{}` | no |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | List of server certificate thumbprints for the OIDC provider | `list(string)` | n/a | yes |
 
 ## Outputs
 
-| Name | Type | Description |
-|------|------|-------------|
-| `provider_arn` | `string` | ARN of the OIDC identity provider |
-| `role_arns` | `map(string)` | Map of role keys to IAM role ARNs |
-| `role_names` | `map(string)` | Map of role keys to IAM role names |
+| Name | Description |
+| ---- | ----------- |
+| <a name="output_provider_arn"></a> [provider\_arn](#output\_provider\_arn) | ARN of the OIDC identity provider |
+| <a name="output_role_arns"></a> [role\_arns](#output\_role\_arns) | Map of role keys to IAM role ARNs |
+| <a name="output_role_names"></a> [role\_names](#output\_role\_names) | Map of role keys to IAM role names |
+<!-- END_TF_DOCS -->
 
 ## What it creates
 
@@ -146,13 +166,6 @@ Remove `moved` blocks after the first successful apply.
 
 - [`examples/basic`](examples/basic/) — GitHub Actions OIDC for a single repo
 - [`examples/complete`](examples/complete/) — Terraform Cloud + GitHub Actions, multiple roles
-
-## Requirements
-
-| Tool | Version |
-|------|---------|
-| Terraform | `>= 1.5.0` |
-| AWS provider | `~> 5.0` |
 
 ## License
 
